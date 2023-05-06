@@ -1,22 +1,35 @@
-import React from 'react'
-import { Scheduler } from "@aldabil/react-scheduler";
+import React, { useCallback, useState, useMemo } from 'react'
+import { Calendar as ReactBigCalendar, globalizeLocalizer } from 'react-big-calendar'
+import globalize from 'globalize'
 
+const localizer = globalizeLocalizer(globalize)
 export default function Calendar() {
-  return <Scheduler
-    view="month"
-    events={[
-      {
-        event_id: 1,
-        title: "Event 1",
-        start: new Date("2021/5/2 09:30"),
-        end: new Date("2021/5/2 10:30"),
-      },
-      {
-        event_id: 2,
-        title: "Event 2",
-        start: new Date("2021/5/4 10:00"),
-        end: new Date("2021/5/4 11:00"),
-      },
-    ]}
+  const [myEvents, setEvents] = useState([])
+
+  const handleSelectEvent = useCallback(
+    (event) => window.alert(event.title),
+    []
+  )
+
+  const handleSelectSlot = useCallback(
+    ({ start, end }) => {
+      const title = window.prompt('New Event name')
+      if (title) {
+        setEvents((prev) => [...prev, { start, end, title }])
+      }
+    },
+    [setEvents]
+  )
+
+  return <ReactBigCalendar
+    localizer={localizer}
+    events={myEvents}
+    startAccessor="start"
+    endAccessor="end"
+    defaultView="month"
+    style={{ height: "100vh" }}
+    onSelectEvent={handleSelectEvent}
+    onSelectSlot={handleSelectSlot}
+    selectable
   />
 }

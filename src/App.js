@@ -1,6 +1,6 @@
-import logo from './logo.svg';
 import './App.scss';
-import Calendar from 'components/calendar'
+import Calendar from 'components/Calendar'
+import "react-big-calendar/lib/css/react-big-calendar.css";
 
 function App() {
   return (
