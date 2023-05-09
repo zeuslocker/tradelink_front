@@ -1,5 +1,16 @@
-.modal-window {
-  height: 40hv;
-  width: 40vw;
+.modalWindow {
+  height: 100vh;
+  width: 100vw;
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+}
+
+.modal {
+  width: 700px;
+  height: 600px;
+  max-width: 100vw;
+  max-height: 100vh;
 }

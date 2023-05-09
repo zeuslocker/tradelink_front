@@ -3,7 +3,7 @@ import { Calendar as ReactBigCalendar, globalizeLocalizer } from 'react-big-cale
 import globalize from 'globalize'
 
 const localizer = globalizeLocalizer(globalize)
-export default function Calendar() {
+export default function Calendar({ setModal }) {
   const [myEvents, setEvents] = useState([])
 
   const handleSelectEvent = useCallback(
@@ -29,7 +29,7 @@ export default function Calendar() {
     defaultView="month"
     style={{ height: "100vh" }}
     onSelectEvent={handleSelectEvent}
-    onSelectSlot={handleSelectSlot}
+    onSelectSlot={(props) => setModal({ open: true, props })}
     selectable
   />
 }
