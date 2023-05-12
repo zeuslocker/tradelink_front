@@ -1,29 +1,34 @@
-import React, { useCallback, useState, useMemo } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { Calendar as ReactBigCalendar, globalizeLocalizer } from 'react-big-calendar'
+import axios from 'axiosInstance.js';
 import globalize from 'globalize'
 
 const localizer = globalizeLocalizer(globalize)
-export default function Calendar({ setModal }) {
-  const [myEvents, setEvents] = useState([])
+export default function Calendar({ setModal, events, setEvents }) {
+  const reservationsToEvents = useCallback((reservations) => {
+    return reservations.map((r) => (
+      {
+        start: new Date(r.start),
+        end: new Date(r.finish),
+        title: r.title
+      }
+    ))
+  }, [])
+
+  useEffect(() => {
+    axios.get('/reservations').then(response => {
+      setEvents(reservationsToEvents(response.data))
+    })
+  }, [])
 
   const handleSelectEvent = useCallback(
     (event) => window.alert(event.title),
     []
   )
 
-  const handleSelectSlot = useCallback(
-    ({ start, end }) => {
-      const title = window.prompt('New Event name')
-      if (title) {
-        setEvents((prev) => [...prev, { start, end, title }])
-      }
-    },
-    [setEvents]
-  )
-
   return <ReactBigCalendar
     localizer={localizer}
-    events={myEvents}
+    events={events}
     startAccessor="start"
     endAccessor="end"
     defaultView="month"
